@@ -1,53 +1,23 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useLayoutEffect } from "react"
 
-
-const lessons = [
-    {
-        id: 1,
-        name: "JS1"
-    },
-    {
-        id: 2,
-        name: "JS2"
-    },
-    {
-        id: 3,
-        name: "JS3"
-    }
-]
 
 function Content(){
-    const [lessonId, setLessonId] = useState(1)
+    const [count, setCount] = useState(0)
 
-    useEffect(() => {
-        const handleComment = ({ detail }) => {
-            console.log(detail)
+    useLayoutEffect(() => {
+        if (count > 3){
+            setCount(0)
         }
-
-        window.addEventListener(`lesson-${lessonId}`, handleComment)
-
-        return () => {
-            window.removeEventListener(`lesson-${lessonId}`, handleComment)
-        }
-    }, [lessonId])
+    }, [count])
+    
+    const handleCount = () => {
+        setCount(count + 1)
+    }
 
     return (
         <div>
-            <ul>
-                {lessons.map(lesson => (
-                    <li
-                        key={lesson.id}
-                        style={{
-                            color: lessonId === lesson.id ?
-                                "red":
-                                "#333"  
-                        }}
-                        onClick={() => setLessonId(lesson.id)}
-                    >
-                        {lesson.name}
-                    </li>
-                ))}    
-            </ul>            
+            <h1>{count}</h1>
+            <button onClick={handleCount}>Click</button>
         </div>
     )
 }
