@@ -3,20 +3,30 @@ import { useState, useEffect } from "react"
 const tabs = ["posts", "comments", "albums"]
 
 function Content(){
-    const [countdown, setCountdown] = useState(180)
+    const [avatar, setAvatar] = useState()
 
     useEffect(() => {
-        const timeID = setInterval(() => {
-            setCountdown(prev => prev - 1)
-            console.log("Countdown...")
-        }, 1000);
+        return () => {
+            avatar && URL.revokeObjectURL(avatar.preview)
+        }
+    }, [avatar])
 
-        return () => clearInterval(timeID)
-    }, [])
+    const handlePreviewAvatar = (e) => {
+        const file = e.target.files[0]
+        file.preview = URL.createObjectURL(file)
+        console.log(URL.createObjectURL(file))
+        setAvatar(file)
+    }
 
     return (
         <div>
-            <h1>{countdown}</h1>
+            <input
+                type="file"
+                onChange={handlePreviewAvatar}
+            />
+            {avatar && (
+                <img src={avatar.preview} alt="" width="80%" />
+            )}
         </div>
     )
 }
