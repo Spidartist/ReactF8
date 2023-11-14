@@ -1,33 +1,38 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useMemo } from "react"
 
 
 function Content(){
-    const [count, setCount] = useState(60)
+    const [name, setName] = useState('')
+    const [price, setPrice] = useState('')
+    const [products, setProducts] = useState([])
 
-    const timeId = useRef()
-    const prevCount = useRef()
+    const handleSubmit = () => {
 
-    useEffect(() => {
-        prevCount.current = count
-    }, [count])
-    
-    const handleStart = () => {
-        timeId.current = setInterval(() => {
-            setCount(prev => prev -1)
-        }, 1000);
     }
-
-    const handleStop = () => {
-        clearInterval(timeId.current)
-    }
-
-    console.log(count, prevCount.current)
 
     return (
-        <div>
-            <h1>{count}</h1>
-            <button onClick={handleStart}>Start</button>
-            <button onClick={handleStop}>Stop</button>
+        <div style={{padding: '10px 32px'}}>
+                <input
+                    value={name}
+                    placeholder="Enter name..."
+                    onChange={e => setName(e.target.value)}
+                />
+                <br/>
+                <input
+                    value={price}
+                    placeholder="Enter price..."
+                    onChange={e => setPrice(e.target.value)}
+                />
+                <br/>
+                <button onClick={handleSubmit}>Add</button>
+                <br/>
+                Total:
+                <ul>
+                    {products.map((product, index) => (
+                        <li key={index}>{product.name}-{product.price}</li>
+                    ))}
+
+                </ul>
         </div>
     )
 }
