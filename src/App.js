@@ -1,46 +1,23 @@
-import { useRef } from "react"
-import { useStore, actions } from "./store"
-
+import { useImperativeHandle, useRef } from 'react'
+import Video from './Video'
 
 function App(){
 
-	const inputRef = useRef()
+    const videoRef = useRef()
 
-	const [state, dispatch] = useStore()
-	const {todos, todoInput} = state
-
-	console.log('todoInput: ', todoInput)
-
-	const handleAdd = () => {
-		dispatch(actions.addTodo(todoInput))
-		dispatch(actions.setTodoInput(""))
-		inputRef.current.focus()
+	const handlePlay = () => {
+		videoRef.current.play()
 	}
 
-
-	console.log(todos)
-
+	const handlePause = () => {
+		videoRef.current.pause()
+	}
+	
 	return (
 		<div>
-			<input
-				ref={inputRef}
-				value={todoInput}
-				placeholder="Enter todo..."
-				onChange={e => {
-					dispatch(actions.setTodoInput(e.target.value))
-				}}
-			/>
-			<button onClick={handleAdd}>Add</button>
-			<ul>
-				{todos.map((todo, index) => (
-					<li key={index}>{todo}
-						<span onClick={() => dispatch(actions.deleteTodo(index))}>
-							&times;
-						</span>
-					</li>
-					
-				))}
-			</ul>
+			<Video ref={videoRef}/>
+			<button onClick={handlePlay}>Play</button>
+			<button onClick={handlePause}>Pause</button>
 		</div>
 	)
 
